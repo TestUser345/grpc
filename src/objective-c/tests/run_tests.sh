@@ -53,3 +53,13 @@ xcodebuild \
     test \
     | egrep "$XCODEBUILD_FILTER" \
     | egrep -v "(GPBDictionary|GPBArray)" -
+
+PROJECT_TEMP_ROOT=`xcodebuild -workspace Tests.xcworkspace/ -scheme AllTests \
+                  -destination name="iPhone 6" test -dry-run -showBuildSettings \
+                  | grep PROJECT_TEMP_ROOT | sed 's/^.* = //'`
+
+SRCROOT=`pwd | sed 's/.tests//'`
+
+INSTRUMENTED_EXE_PATH=$PROJECT_TEMP_ROOT/CodeCoverage/AllTests/Products/Debug-iphonesimulator/AllTests.xctest/AllTests
+CODE_COVERAGE_DATA=$PROJECT_TEMP_ROOT/CodeCoverage/AllTests/Coverage.profdata
+xcrun llvm-cov report -instr-profile $CODE_COVERAGE_DATA $INSTRUMENTED_EXE_PATH $SRCROOT/*/*.m $SRCROOT/*/*/*.m 
