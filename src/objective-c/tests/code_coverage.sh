@@ -34,7 +34,7 @@ cd $(dirname $0)
 
 set -o pipefail
 echo 'Complete dir listing:'
-echo `ls -lR /Users/travis/Library/Developer/Xcode/DerivedData`
+ls -lR /Users/travis/Library/Developer/Xcode/DerivedData
 echo 'running code_coverage from: '
 echo `pwd`
 PROJECT_TEMP_ROOT=`xcodebuild -workspace Tests.xcworkspace/ -scheme AllTests \
