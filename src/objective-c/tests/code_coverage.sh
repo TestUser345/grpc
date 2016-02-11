@@ -33,13 +33,20 @@ set -e
 cd $(dirname $0)
 
 set -o pipefail
-
+echo 'running code_coverage from: '
+echo `pwd`
 PROJECT_TEMP_ROOT=`xcodebuild -workspace Tests.xcworkspace/ -scheme AllTests \
                   -destination name="iPhone 6" test -dry-run -showBuildSettings \
                   | grep PROJECT_TEMP_ROOT | sed 's/^.* = //'`
+echo PROJECT_TEMP_ROOT=$PROJECT_TEMP_ROOT
 
 SRCROOT=`pwd | sed 's/.tests//'`
+echo SRCROOT=$SRCROOT
 
 INSTRUMENTED_EXE_PATH=$PROJECT_TEMP_ROOT/CodeCoverage/AllTests/Products/Debug-iphonesimulator/AllTests.xctest/AllTests
+echo INSTRUMENTED_EXE_PATH=$INSTRUMENTED_EXE_PATH
 CODE_COVERAGE_DATA=$PROJECT_TEMP_ROOT/CodeCoverage/AllTests/Coverage.profdata
+echo CODE_COVERAGE_DATA=$CODE_COVERAGE_DATA
+echo `ls -l $CODE_COVERAGE_DATA`
+echo `ls -l $INSTRUMENTED_EXE_PATH`
 xcrun llvm-cov report -instr-profile $CODE_COVERAGE_DATA $INSTRUMENTED_EXE_PATH $SRCROOT/*/*.m $SRCROOT/*/*/*.m 
