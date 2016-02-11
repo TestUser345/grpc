@@ -30,6 +30,6 @@ xcode_scheme:
   # - InteropTestsRemote
 after_script:
   - src/objective-c/tests/code_coverage.sh
-xcode_sdk: iphonesimulator9.1
+xcode_sdk: iphonesimulator9.2
 notifications:
   email: false
